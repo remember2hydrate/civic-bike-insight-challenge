@@ -50,7 +50,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     required_columns = ["_id", "antalcykler", "tidsstempel"]
     missing = [col for col in required_columns if col not in df.columns]
     if missing:
-        raise ValueError(f"ETL failed: missing expected columns: {missing}")
+        raise st.warning(f"ETL failed: missing expected columns: {missing}")
     st.info("Dataframe columns:", df.columns.tolist())
     df = df.rename(columns={
         "antalcykler": "bike_count",
