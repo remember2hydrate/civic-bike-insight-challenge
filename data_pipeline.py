@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 from google.cloud import bigquery
 from google.oauth2 import service_account
+import streamlit as st
 
 # Constants
 RESOURCE_ID = "50f7a383-653a-4860-bb4e-306f221a2d2a"
@@ -32,7 +33,7 @@ def load_credentials():
         raise RuntimeError(f"Failed to load credentials: {e}")
 
 def fetch_raw_data():
-    print("Fetching raw data...")
+    st.info("Fetching raw data...")
     response = requests.get(DATA_URL)
     response.raise_for_status()
     records = response.json()["result"]["records"]
@@ -40,13 +41,13 @@ def fetch_raw_data():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     raw_path = f"{RAW_DATA_DIR}/bike_raw_{timestamp}.csv"
     df.to_csv(raw_path, index=False)
-    print(f"Saved raw data to {raw_path}")
+    st.info(f"Saved raw data to {raw_path}")
     return df
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
-    print("Cleaning data...")
+    st.info("Cleaning data...")
     df = df.dropna(subset=["_id", "antalcykler", "tidsstempel"])
-    print("Dataframe columns:", df.columns.tolist())
+    st.info("Dataframe columns:", df.columns.tolist())
     df = df.rename(columns={
         "antalcykler": "bike_count",
         "tidsstempel": "timestamp",
@@ -60,7 +61,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     clean_path = f"{CLEAN_DATA_DIR}/bike_cleaned_{timestamp}.csv"
     df.to_csv(clean_path, index=False)
-    print(f"Saved cleaned data to {clean_path}")
+    st.info("Saved cleaned data to {clean_path}")
     return df
 
 def upload_to_bigquery(df: pd.DataFrame, credentials, max_retries=4):
@@ -80,10 +81,10 @@ def upload_to_bigquery(df: pd.DataFrame, credentials, max_retries=4):
         try:
             job = client.load_table_from_dataframe(df, table_ref, job_config=job_config, location="EU")
             job.result()
-            print(f"✅ Upload successful on attempt {attempt}: {len(df)} rows to {table_ref}")
+            st.info(f"✅ Upload successful on attempt {attempt}: {len(df)} rows to {table_ref}")
             return
         except Exception as e:
-            print(f"❌ Upload attempt {attempt} failed: {e}")
+            st.info(f"❌ Upload attempt {attempt} failed: {e}")
             time.sleep(2)
     raise RuntimeError("Upload failed after max retries")
 
@@ -94,7 +95,7 @@ def main():
         df_clean = clean_data(df_raw)
         upload_to_bigquery(df_clean, credentials)
     except Exception as e:
-        print(f"❌ Pipeline failed: {e}")
+        st.info(f"❌ Pipeline failed: {e}")
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,7 @@
 import unittest
 import pandas as pd
 import os
+import streamlit as st
 
 CLEAN_DATA_DIR = "data/cleaned"
 REQUIRED_COLUMNS = ["timestamp", "street_name", "direction", "bike_count"]
@@ -14,7 +15,7 @@ class TestCleanedData(unittest.TestCase):
             raise FileNotFoundError("No cleaned data files found.")
         latest_file = os.path.join(CLEAN_DATA_DIR, files[-1])
         cls.df = pd.read_csv(latest_file, parse_dates=["timestamp"])
-        print(f"Testing file: {latest_file}")
+        st.info(f"Testing file: {latest_file}")
 
     def test_required_columns_exist(self):
         for col in REQUIRED_COLUMNS:
