@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import os
 import time
+import pytz
 from google.cloud import bigquery
 from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
@@ -56,7 +57,10 @@ max_date = df["timestamp"].max()
 date_range = st.date_input("Select date range", [min_date, max_date])
 
 if len(date_range) == 2:
-    df = df[(df["timestamp"] >= pd.to_datetime(date_range[0])) & (df["timestamp"] <= pd.to_datetime(date_range[1]))]
+    # Make sure both ends of the range are timezone-aware in UTC
+    start_date = pd.to_datetime(date_range[0]).tz_localize("UTC")
+    end_date = pd.to_datetime(date_range[1]).tz_localize("UTC")
+    df = df[(df["timestamp"] >= start_date) & (df["timestamp"] <= end_date)]
 
 st.subheader("📊 Key Stats")
 col1, col2 = st.columns(2)
