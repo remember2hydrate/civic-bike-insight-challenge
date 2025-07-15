@@ -7,7 +7,7 @@ from google.oauth2 import service_account
 
 # Config
 CLEAN_DATA_DIR = "data/cleaned"
-PROJECT_ID = "civic-bike-insight-challenge"
+PROJECT_ID = "civic-bike-data-challenge"
 DATASET_ID = "bike_data"
 TABLE_ID = "traffic_counts"
 
