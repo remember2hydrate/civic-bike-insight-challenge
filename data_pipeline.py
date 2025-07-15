@@ -46,12 +46,12 @@ def fetch_raw_data():
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     st.info("Cleaning data...")
-    st.info("Dataframe columns:", df.columns.tolist())
+    st.info(f"Dataframe columns: {df.columns.tolist()}")
     required_columns = ["_id", "antalcykler", "tidsstempel"]
     missing = [col for col in required_columns if col not in df.columns]
     if missing:
         raise st.warning(f"ETL failed: missing expected columns: {missing}")
-    st.info("Dataframe columns:", df.columns.tolist())
+    st.info(f"Dataframe columns: {df.columns.tolist()}")
     df = df.rename(columns={
         "antalcykler": "bike_count",
         "tidsstempel": "timestamp",
