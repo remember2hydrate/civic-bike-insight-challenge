@@ -1,8 +1,7 @@
 
 
 # civic-bike-data-challenge
-This project simulates delivering an end-to-end cloud data solution for a public sector client (e.g., Copenhagen municipality), meeting a Senior Data Engineer job description expectations.
-
+Simulated delivery of a cloud data platform for a public sector client (e.g., Copenhagen Municipality), aligned with Senior Data Engineer job expectations.
 
 ## Stack
 
@@ -20,7 +19,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Run the pipeline
+### 2. Run ETL pipeline
 
 ```bash
 python data_pipeline.py
@@ -34,9 +33,9 @@ streamlit run dashboard_app.py
 
 ---
 
-## 🧭 Interview Requirement Checklist
+## 🧭 Requirement Checklist
 
-| Job Requirement                                     | Covered in This Project                   |
+|  Requirement                                       | Covered in This Project                   |
 |----------------------------------------------------|-------------------------------------------|
 | Data platform (MS Fabric / SAS)                    | Simulated via BigQuery                    |
 | Cloud platform (Azure / AWS / GCP)                 | GCP used throughout                       |
