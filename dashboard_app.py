@@ -29,10 +29,18 @@ def load_data():
         LIMIT 10000
         """
         return client.query(query).to_dataframe()
+    except NotFound as e:
+        st.warning("BigQuery table not found. Running ETL pipeline...")
+        try:
+            run_pipeline()
+            st.success("✅ Pipeline completed. Reloading data...")
+            return load_data()  # Retry after ETL
+        except Exception as etl_error:
+            st.error(f"ETL failed: {etl_error}")
+            return pd.DataFrame()
     except Exception as e:
-        st.warning(f"Could not connect to BigQuery: {e}")
+        st.error(f"Could not load data: {e}")
         return pd.DataFrame()
-
 # App
 st.title("🚲 Copenhagen Bike Traffic Dashboard")
 st.markdown("This dashboard visualizes bike count data from open civic datasets.")

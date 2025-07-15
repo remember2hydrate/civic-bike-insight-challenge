@@ -72,6 +72,8 @@ def upload_to_bigquery(df: pd.DataFrame):
     table_ref = f"{PROJECT_ID}.{DATASET_ID}.{TABLE_ID}"
     job_config = bigquery.LoadJobConfig(
         write_disposition="WRITE_APPEND",
+        autodetect=True,  
+        source_format=bigquery.SourceFormat.PARQUET,  
         schema=[
             bigquery.SchemaField("timestamp", "TIMESTAMP"),
             bigquery.SchemaField("street_name", "STRING"),
@@ -80,7 +82,7 @@ def upload_to_bigquery(df: pd.DataFrame):
         ],
     )
 
-    job = client.load_table_from_dataframe(df, table_ref, job_config=job_config)
+    job = client.load_table_from_dataframe(df, table_ref, job_config=job_config, location=EU)
     job.result()  # Wait for completion
     print(f"✅ Uploaded {len(df)} records to BigQuery table `{table_ref}`.")
 
