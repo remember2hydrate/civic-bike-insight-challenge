@@ -46,28 +46,32 @@ def fetch_raw_data():
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     st.info("Cleaning data...")
-    st.info(f"Dataframe columns: {df.columns.tolist()}")
-    required_columns = ["_id", "antalcykler", "tidsstempel"]
+    required_columns = ["aadt_cykler", "taelle_dato", "vejnavn"]
     missing = [col for col in required_columns if col not in df.columns]
     if missing:
         st.warning(f"ETL failed: missing expected columns: {missing}")
         raise ValueError(f"ETL failed: missing expected columns: {missing}")
+
     st.info(f"Dataframe columns: {df.columns.tolist()}")
+
+    df = df.dropna(subset=required_columns)
     df = df.rename(columns={
-        "antalcykler": "bike_count",
-        "tidsstempel": "timestamp",
-        "vejnavn": "street_name",
-        "retning": "direction"
+        "aadt_cykler": "bike_count",
+        "taelle_dato": "timestamp",
+        "vejnavn": "street_name"
     })
     df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
     df["bike_count"] = pd.to_numeric(df["bike_count"], errors="coerce")
+    df["direction"] = "unknown"  # Default placeholder
     df = df.dropna(subset=["timestamp", "bike_count"])
     df = df[["timestamp", "street_name", "direction", "bike_count"]]
+    
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     clean_path = f"{CLEAN_DATA_DIR}/bike_cleaned_{timestamp}.csv"
     df.to_csv(clean_path, index=False)
-    st.info("Saved cleaned data to {clean_path}")
+    st.success(f"✅ Saved cleaned data to {clean_path} with {len(df)} records")
     return df
+
 
 def upload_to_bigquery(df: pd.DataFrame, credentials, max_retries=4):
     client = bigquery.Client(credentials=credentials, project=PROJECT_ID)
