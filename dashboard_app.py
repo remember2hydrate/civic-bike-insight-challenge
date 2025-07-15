@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from google.cloud import bigquery
 from google.oauth2 import service_account
+from google.api_core.exceptions import NotFound
 from data_pipeline import main as run_pipeline
 
 # Config
