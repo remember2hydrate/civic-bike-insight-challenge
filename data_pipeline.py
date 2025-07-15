@@ -11,7 +11,7 @@ RESOURCE_ID = "50f7a383-653a-4860-bb4e-306f221a2d2a"
 DATA_URL = f"https://admin.opendata.dk/api/3/action/datastore_search?resource_id={RESOURCE_ID}&limit=10000"
 RAW_DATA_DIR = "data/raw"
 CLEAN_DATA_DIR = "data/cleaned"
-PROJECT_ID = "your-gcp-project-id"
+PROJECT_ID = "civic-bike-insight-challenge"
 DATASET_ID = "bike_data"
 TABLE_ID = "traffic_counts"
 
