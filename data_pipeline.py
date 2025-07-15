@@ -46,6 +46,7 @@ def fetch_raw_data():
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     print("Cleaning data...")
     df = df.dropna(subset=["_id", "antalcykler", "tidsstempel"])
+    print("Dataframe columns:", df.columns.tolist())
     df = df.rename(columns={
         "antalcykler": "bike_count",
         "tidsstempel": "timestamp",
