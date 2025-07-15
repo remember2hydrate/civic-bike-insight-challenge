@@ -1,4 +1,4 @@
-import base64
+import base64, json
 import streamlit as st
 import pandas as pd
 import os
@@ -15,6 +15,7 @@ TABLE_ID = "traffic_counts"
 def load_data():
     try:
         encoded_key = st.secrets["GCP_CREDENTIALS_B64"]
+        st.text(f"Key length: {len(encoded_key)}")
         decoded_json = base64.b64decode(encoded_key).decode("utf-8")
         credentials_info = json.loads(decoded_json)
 

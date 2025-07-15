@@ -1,4 +1,4 @@
-import base64
+import base64, json
 import requests
 import pandas as pd
 import os
@@ -59,6 +59,7 @@ def upload_to_bigquery(df: pd.DataFrame):
     print("Uploading to BigQuery...")
     try:
         	encoded_key = st.secrets["GCP_CREDENTIALS_B64"]
+            st.text(f"Key length: {len(encoded_key)}")
             decoded_json = base64.b64decode(encoded_key).decode("utf-8")
             credentials_info = json.loads(decoded_json)
 
