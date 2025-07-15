@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 import pandas as pd
 import os
@@ -26,17 +27,10 @@ def load_data():
         ORDER BY timestamp DESC
         LIMIT 10000
         """
-        df = client.query(query).to_dataframe()
-        return df
+        return client.query(query).to_dataframe()
     except Exception as e:
         st.warning(f"Could not connect to BigQuery: {e}")
-        st.info("Falling back to latest local cleaned CSV.")
-        files = sorted([f for f in os.listdir(CLEAN_DATA_DIR) if f.endswith(".csv")])
-        if not files:
-            st.error("No local data files found.")
-            return pd.DataFrame()
-        df = pd.read_csv(os.path.join(CLEAN_DATA_DIR, files[-1]), parse_dates=["timestamp"])
-        return df
+        return pd.DataFrame()
 
 # App
 st.title("🚲 Copenhagen Bike Traffic Dashboard")
