@@ -60,7 +60,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
         "taelle_dato": "timestamp",
         "vejnavn": "street_name"
     })
-    df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
+    df["timestamp"] = pd.to_datetime(df["timestamp"], format="%Y%m%d", errors="coerce")
     df["bike_count"] = pd.to_numeric(df["bike_count"], errors="coerce")
     df["direction"] = "unknown"  # Default placeholder
     df = df.dropna(subset=["timestamp", "bike_count"])
