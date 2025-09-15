@@ -1,7 +1,7 @@
 
 
 # civic-bike-data-challenge
-Simulated delivery of a cloud data platform for a public sector client (e.g., Copenhagen Municipality), aligned with Senior Data Engineer job expectations.
+Simulated delivery of a cloud data platform for a public sector client (e.g. Copenhagen Municipality), aligned with Senior Data Engineer job expectations.
 
 ## Stack
 
